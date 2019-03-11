@@ -44,8 +44,8 @@
         android:hint="@string/username"
         android:textSize="25sp"
         android:textColorHint="#E2E6EE"
-        android:inputType="textPersonName"
         android:textColor="#F2E2EF"
+        android:inputType="textPersonName"
         android:importantForAutofill="no"
         tools:targetApi="o" />
 
