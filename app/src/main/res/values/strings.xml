@@ -1,0 +1,7 @@
+<resources>
+    <color name="white">#FFFFFF</color>
+    <string name="app_name">Queri</string>
+    <string name="title_ask">Ask</string>
+    <string name="title_open_questions">Open</string>
+    <string name="title_closed_questions">Closed</string>
+</resources>
