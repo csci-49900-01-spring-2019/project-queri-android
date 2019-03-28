@@ -23,7 +23,7 @@
         android:layout_marginRight="93dp"
         android:layout_marginBottom="77dp"
         android:contentDescription="@string/logo"
-        app:srcCompat="@drawable/QueriLogo" />
+        app:srcCompat="@drawable/querilogo" />
 
     <EditText
         android:id="@+id/editText"

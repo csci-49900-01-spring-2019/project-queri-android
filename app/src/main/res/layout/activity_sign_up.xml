@@ -38,7 +38,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="115dp"
                 android:layout_marginRight="115dp"
-                app:srcCompat="@drawable/QueriLogo" />
+                app:srcCompat="@drawable/querilogo" />
 
             <TextView
                 android:id="@+id/textView"
