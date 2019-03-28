@@ -1,0 +1,184 @@
+3/12/2019
+Queri API
+
+
+|--------------------------------------------------------------------------------------------------------|
+
+url:https://us-central1-projectq-42a18.cloudfunctions.net/queri/PATH_FOR_FUNCTION_GOES_HERE
+Example
+	Getting comments with url https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/categories/:name/:post_id/comments/
+	Would be written as
+		https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/categories/cooking/-L_l0hlb5ruq_EL_KcRP/comments/
+	Where
+		:post_id is L_l0hlb5ruq_EL_KcRP
+		:name is cooking
+
+note 3/12/2019:
+	-Meta refers to like count & comment count
+	-Identifiers are firebase created unique identification strings in the database. An example of this is -L_l0hlb5ruq_EL_KcRP. These are typically a property name. Also mind that these identifiers contain a "-" in the begining and should be included when making a call.
+	-Yes. Calling these elements posts is confusing. Will update..
+	-Some functions arent included here because we might have to discuss database architecture 
+	-Tested with Postman software. If passing values through body gives any issues try changing header content type to:
+		 "Content-Type": "application/x-www-form-urlencoded"
+
+|--------------------------------------------------------------------------------------------------------|
+
+
+Posts functions
+
+GET posts
+	PATH: /posts/
+	RESPONSE STRUCTURE:
+	{
+	    "categories": {
+	        "CATEGORY_NAME":[
+	            {
+	                "comments": {
+	                    "COMMENT_ID": {
+	                        "content": "CONTENT OF COMMENT",
+	                        "username": "USERNAME OF PERSON WHO CREATED THE COMMENT"
+	                    }
+	                },
+	                "content": "CONTENT",
+	                "meta": {
+	                    "comments": 0,
+	                    "likes": 0
+	                },
+	                "username": "USERNAME OF PERSON WHO CREATED THE POST"
+	            }
+	        ]
+	    }
+	}
+
+
+GET posts
+	PATH: /posts/categories/
+	RESPONSE STRUCTURE:
+	{
+        "CATEGORY_NAME":[
+            {
+                "comments": {
+                    "COMMENT_ID": {
+                        "content": "CONTENT OF COMMENT",
+                        "username": "USERNAME OF PERSON WHO CREATED THE COMMENT"
+                    }
+                },
+                "content": "CONTENT",
+                "meta": {
+                    "comments": 0,
+                    "likes": 0
+                },
+                "username": "USERNAME OF PERSON WHO CREATED THE POST"
+            }
+        ]
+    }
+
+GET posts in category :name
+	PATH: /posts/categories/:name/
+	RESPONSE STRUCTURE:
+	[
+	    {
+	        "comments": {
+	            "COMMENT_ID": {
+	                "content": "CONTENT OF COMMENT",
+	                "username": "USERNAME OF PERSON WHO CREATED THE COMMENT"
+	            }
+	        },
+	        "content": "CONTENT",
+	        "meta": {
+	            "comments": 0,
+	            "likes": 0
+	        },
+	        "username": "USERNAME OF PERSON WHO CREATED THE POST"
+	    }
+	 ]
+
+GET post with identifier :post_id in category :name
+	PATH: /posts/categories/:name/:post_id/
+	RESPONSE STRUCTURE:
+	{
+        "comments": {
+            "COMMENT_ID": {
+                "content": "CONTENT OF COMMENT",
+                "username": "USERNAME OF PERSON WHO CREATED THE COMMENT"
+            }
+        },
+        "content": "CONTENT",
+        "meta": {
+            "comments": 0,
+            "likes": 0
+        },
+        "username": "USERNAME OF PERSON WHO CREATED THE POST"
+	 }
+
+
+POST a new post in category :name
+PATH: /posts/categories/:name/new/
+	body:
+		username:"username of person making a post"
+		content:"content of the post"
+	RESPONSE STRUCTURE:
+		{"status":"success"}
+
+|--------------------------------------------------------------------------------------------------------|
+
+Meta functions
+
+GET meta information of post with identifier :post_id in category :name
+	PATH: /posts/categories/:name/:post_id/meta/
+	RESPONSE STRUCTURE:
+		{
+		    "comments": 2,
+		    "likes": 2
+		}
+
+GET likes of post with identifier :post_id in category :name
+	PATH: /posts/categories/:name/:post_id/meta/likes/
+	RESPONSE STRUCTURE:
+		0
+
+PUT a like to post with identifier :post_id in category :name
+	PATH: /posts/categories/:name/:post_id/meta/like
+	RESPONSE STRUCTURE:
+		{"status":"success"}
+
+|--------------------------------------------------------------------------------------------------------|
+
+Comment functions
+
+GET comments of post with identifier :post_id in category :name
+	PATH: /posts/categories/:name/:post_id/comments/
+	RESPONSE STRUCTURE:
+		{
+	        "COMMENT_ID": {
+	            "content": "CONTENT OF COMMENT",
+	            "username": "USERNAME OF PERSON WHO CREATED THE COMMENT"
+	        }
+	    }
+
+GET comment with identifier :comment_id of post with identifier :post_id in category :name
+	PATH: /posts/categories/:name/:post_id/comments/:comment_id/
+	RESPONSE STRUCTURE:
+	 	{
+	            "content": "CONTENT OF COMMENT",
+	            "username": "USERNAME OF PERSON WHO CREATED THE COMMENT"
+	    }
+
+GET comment username of comment with identifier :comment_id of post with identifier :post_id in category :name
+	path:/posts/categories/:name/:post_id/comments/:comment_id/username/
+	RESPONSE STRUCTURE:
+		"USERNAME OF PERSON WHO COMMENTED"
+
+GET comment content of comment with identifier :comment_id of post with identifier :post_id in category :name
+	PATH: /posts/categories/:name/:post_id/comments/:comment_id/content/
+	RESPONSE STRUCTURE:
+		"CONTENT OF COMMENTED"
+
+
+POST a new comment in post with identifier :post_id in category :name
+	PATH: /posts/categories/:name/:post_id/comments/new/
+	body:
+		username:"username of person making a comment"
+		content:"content of the comment"
+	RESPONSE STRUCTURE:
+		{"status":"success"}
