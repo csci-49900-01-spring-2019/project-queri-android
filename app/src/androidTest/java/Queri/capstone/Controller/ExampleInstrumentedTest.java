@@ -1,4 +1,4 @@
-package com.capstone.queri;
+package Queri.capstone.Controller;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

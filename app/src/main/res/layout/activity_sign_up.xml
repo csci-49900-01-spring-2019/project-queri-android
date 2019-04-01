@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".sign_up">
+    tools:context="Queri.Controller.Sign_Up">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="297dp"
+            android:layout_height="319dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
@@ -55,8 +55,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="367dp"
-            android:layout_height="389dp"
+            android:layout_width="wrap_content"
+            android:layout_height="408dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentEnd="true"

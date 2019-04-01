@@ -1,13 +1,13 @@
-package com.capstone.queri;
+package Queri.Model;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
+
+import com.capstone.queri.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,16 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        click = (Button) findViewById(R.id.button);
-        data = (TextView) findViewById(R.id.fetcheddata);
 
-        click.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                fetchData process = new fetchData("https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/categories/category1/0/content");
-                process.execute();
-            }
-        });
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

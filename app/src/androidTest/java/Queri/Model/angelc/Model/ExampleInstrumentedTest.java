@@ -1,4 +1,4 @@
-package com.example.angelc.myapplication;
+package Queri.Model.angelc.Model;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -1,9 +1,10 @@
-package com.capstone.queri;
+package Queri.Controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import com.capstone.queri.R;
 
-public class sign_up extends AppCompatActivity {
+public class Sign_Up extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
