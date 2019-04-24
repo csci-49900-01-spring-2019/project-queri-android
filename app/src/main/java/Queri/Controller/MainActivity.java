@@ -1,8 +1,11 @@
 package Queri.Controller;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,48 +16,45 @@ import com.capstone.queri.R;
 
 import java.text.BreakIterator;
 
-public class MainActivity extends AppCompatActivity {
+public class   MainActivity extends AppCompatActivity {
 
-    public static BreakIterator data;
-    private TextView mTextMessage;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-    };
-
+    BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+    @SuppressLint("MissingSuperCall")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Button click = (Button) findViewById(R.id.button);
-        TextView data = (TextView) findViewById(R.id.fetcheddata);
+        final FragmentManager fragmentManager = getSupportFragmentManager();
 
-        click.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                FetchData process = new FetchData("https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/categories/category1/0/content");
-                process.execute();
-            }
-        });
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        // define your fragments here
+        final Fragment fragment1 = new featuredFragment();
+        final Fragment fragment2 = new archivedFragment();
+        final Fragment fragment3 = new votingFragment();
+        // handle navigation selection
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        Fragment fragment;
+                        switch (item.getItemId()) {
+                            case R.id.navigation_home:
+                                fragment = fragment1;
+                                break;
+                            case R.id.navigation_dashboard:
+                                fragment = fragment2;
+                                break;
+                            case R.id.navigation_notifications:
+                            default:
+                                fragment = fragment3;
+                                break;
+                        }
+                        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                        return true;
+                    }
+                });
+        // Set default selection
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+
     }
 
 }

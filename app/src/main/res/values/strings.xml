@@ -1,9 +1,9 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <string name="app_name">Queri</string>
-    <string name="title_ask">Ask</string>
-    <string name="title_open_questions">Open</string>
-    <string name="title_closed_questions">Closed</string>
+    <string name="title_ask">Featured</string>
+    <string name="title_open_questions">Vote</string>
+    <string name="title_closed_questions">Archved</string>
     <string name="sign_up">Sign Up</string>
     <string name="logo">logo</string>
     <string name="username">username</string>
@@ -12,4 +12,7 @@
     <string name="title_home"></string>
     <string name="title_dashboard" />
     <string name="title_notifications" />
+    <string name="text_favorites">Featured</string>
+    <string name="text_schedules">Archived</string>
+    <string name="text_music">Voting</string>
 </resources>
