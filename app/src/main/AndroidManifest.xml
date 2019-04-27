@@ -15,12 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name="queri.controller.Sign_Up" />
+        <activity android:name="queri.controller.MainActivity" />
         <activity
-            android:name="Queri.Controller.Sign_Up">
-        </activity>
-        <activity android:name="Queri.Controller.MainActivity"></activity>
-        <activity
-            android:name="Queri.Controller.LoginPage"
+            android:name="queri.controller.LoginPage"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

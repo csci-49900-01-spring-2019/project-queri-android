@@ -1,4 +1,4 @@
-package Queri.Model;
+package queri.model;
 
 public class Posts {
 

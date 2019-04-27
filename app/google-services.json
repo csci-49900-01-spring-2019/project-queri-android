@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "662201978069",
+    "firebase_url": "https://projectq-42a18.firebaseio.com",
+    "project_id": "projectq-42a18",
+    "storage_bucket": "projectq-42a18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662201978069:android:3e6386f0621d57a9",
+        "android_client_info": {
+          "package_name": "com.capstone.queri"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "662201978069-r0498ihnipvkg5vppt9laqho67bc94c8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXbZZagQa1vrcy_q-gC1FJJEB6vZkUNsg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "662201978069-r0498ihnipvkg5vppt9laqho67bc94c8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

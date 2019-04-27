@@ -13,28 +13,7 @@
         android:text="@string/text_favorites"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <TextView
-        android:id="@+id/text_favorites"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/text_favorites" />
 
-    <TextView
-        android:id="@+id/text_schedules"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/text_schedules"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/text_music"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/text_music"
-        android:visibility="gone" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

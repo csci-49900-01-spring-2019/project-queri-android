@@ -1,4 +1,4 @@
-package Queri.capstone.Controller;
+package queri.model.angelc.Model;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.capstone.queri", appContext.getPackageName());
+        assertEquals("com.example.angelc.myapplication", appContext.getPackageName());
     }
 }

@@ -6,7 +6,8 @@
     <string name="title_closed_questions">Archved</string>
     <string name="sign_up">Sign Up</string>
     <string name="logo">logo</string>
-    <string name="username">username</string>
+    <string name="username">Email</string>
+    <string name="usernameIdentifier">Username</string>
     <string name="password">password</string>
     <string name="login">login</string>
     <string name="title_home"></string>
@@ -15,4 +16,9 @@
     <string name="text_favorites">Featured</string>
     <string name="text_schedules">Archived</string>
     <string name="text_music">Voting</string>
+    <string name="passwordSignup">Password</string>
+    <string name="welcome_aboard">Welcome Aboard</string>
+    <string name="re_enter_password">Re-enter Password</string>
+    <string name="email">Email</string>
+    <string name="logo_image">LOGO Image</string>
 </resources>

@@ -1,4 +1,4 @@
-package Queri.capstone.Controller;
+package queri.capstone.Controller;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package Queri.Model.angelc.Model;
+package queri.model.angelc.Model;
 
 import org.junit.Test;
 
