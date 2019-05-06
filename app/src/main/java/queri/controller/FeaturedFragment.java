@@ -63,9 +63,10 @@ public class FeaturedFragment extends Fragment{
             Bundle bundle = new Bundle();
             bundle.putString("post",post1);
             bundle.putString("meta",meta1);
-            Fragment reply = new RepliesFragment();
-            reply.setArguments(bundle);
-            getChildFragmentManager().beginTransaction().replace(R.id.fragment_container_replies,reply).commit();
+//            Fragment reply = new RepliesFragment();
+//            reply.setArguments(bundle);
+            ((MainActivity) getActivity()).replies(bundle);
+//            getChildFragmentManager().beginTransaction().replace(R.id.fragment_container_replies,reply).commit();
         }
     };
     private class GetPosts extends AsyncTask<Void, Void, Void> {
@@ -94,6 +95,7 @@ public class FeaturedFragment extends Fragment{
                     // looping through All posts
                     for (int i = 0; i < featuredPosts.length(); i++) {
                         JSONObject post = featuredPosts.getJSONObject(i);
+                        JSONObject id = featuredPosts.getJSONObject()
                         String postContent = post.getString("content");
 
                         // Getting Post meta data
