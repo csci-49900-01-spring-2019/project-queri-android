@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 import com.capstone.queri.R;
 
-public class   MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
 
     @SuppressLint("MissingSuperCall")

@@ -5,16 +5,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.capstone.queri.R;
@@ -46,8 +50,24 @@ public class FeaturedFragment extends Fragment{
         super.onActivityCreated(savedInstanceState);
         postInfo = new ArrayList<>();
         new GetPosts().execute();
+        posts.setOnItemClickListener(clickedItem);
 
     }
+    private ListView.OnItemClickListener clickedItem = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            TextView post = (TextView) view.findViewById(R.id.Post);
+            TextView meta = (TextView) view.findViewById(R.id.meta_data);
+            String post1 = post.getText().toString();
+            String meta1 = meta.getText().toString();
+            Bundle bundle = new Bundle();
+            bundle.putString("post",post1);
+            bundle.putString("meta",meta1);
+            Fragment reply = new RepliesFragment();
+            reply.setArguments(bundle);
+            getChildFragmentManager().beginTransaction().replace(R.id.fragment_container_replies,reply).commit();
+        }
+    };
     private class GetPosts extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -84,8 +104,8 @@ public class FeaturedFragment extends Fragment{
 
                         String username = post.getString("username");
 
-                        String totalmeta = username+"\t"+"  Comments: "+numComments
-                                +"  Days Left: "+days_left+"  Number of Likes: "+numLikes;
+                        String totalmeta = username+"\t\t"+"Comments: "+numComments
+                                +"\tDays Left: "+days_left+"\tNumber of Likes: "+numLikes;
 
                         // tmp hash map for single post
                         HashMap<String, String> card = new HashMap<>();
@@ -117,4 +137,17 @@ public class FeaturedFragment extends Fragment{
             posts.setAdapter(adapter);
         }
     }
+//    @Override
+//    public void onDestroyView()
+//    {
+//        FragmentManager mFragmentMgr= getFragmentManager();
+//        FragmentTransaction mTransaction = mFragmentMgr.beginTransaction();
+//        Fragment childFragment =mFragmentMgr.findFragmentById(R.id.fragment_container_replies);
+//        mTransaction.remove(childFragment);
+//        mTransaction.commit();
+//        super.onDestroyView();
+//    }
+
+
+
 }

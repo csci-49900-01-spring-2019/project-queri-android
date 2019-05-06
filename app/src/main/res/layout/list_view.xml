@@ -6,7 +6,7 @@
     android:padding="@dimen/activity_horizontal_margin">
     <TextView
         android:id="@+id/Post"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="2dip"
         android:textColor="@color/colorPrimaryDark" />
