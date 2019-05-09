@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
     public void replies(@Nullable Bundle bundle)
     {
         Fragment replyFragment = new RepliesFragment();
+        replyFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, replyFragment)
                 .commit();
-        replyFragment.setArguments(bundle);
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navlistener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {

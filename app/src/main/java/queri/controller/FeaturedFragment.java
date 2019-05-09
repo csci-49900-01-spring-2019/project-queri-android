@@ -5,16 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -36,6 +31,7 @@ public class FeaturedFragment extends Fragment{
 
     private ListView posts;
     private ArrayList<HashMap<String, String>> postInfo;
+    private HashMap<String, String> reserveComments;
     private String TAG = FeaturedFragment.class.getSimpleName();
 
     @Nullable
@@ -60,9 +56,12 @@ public class FeaturedFragment extends Fragment{
             TextView meta = (TextView) view.findViewById(R.id.meta_data);
             String post1 = post.getText().toString();
             String meta1 = meta.getText().toString();
+            String postId = reserveComments.get(post1);
             Bundle bundle = new Bundle();
             bundle.putString("post",post1);
             bundle.putString("meta",meta1);
+            bundle.putString("postId",postId);
+
 //            Fragment reply = new RepliesFragment();
 //            reply.setArguments(bundle);
             ((MainActivity) getActivity()).replies(bundle);
@@ -95,7 +94,7 @@ public class FeaturedFragment extends Fragment{
                     // looping through All posts
                     for (int i = 0; i < featuredPosts.length(); i++) {
                         JSONObject post = featuredPosts.getJSONObject(i);
-                        JSONObject id = featuredPosts.getJSONObject()
+                        //JSONObject id = featuredPosts.getJSONObject();
                         String postContent = post.getString("content");
 
                         // Getting Post meta data
@@ -115,7 +114,7 @@ public class FeaturedFragment extends Fragment{
                         // adding each child node to HashMap key => value
                         card.put("Post", postContent);
                         card.put("meta_data", totalmeta);
-
+                        reserveComments.put(postContent,String.valueOf(i));
                         // adding contact to contact list
                         postInfo.add(card);
                     }
