@@ -45,6 +45,7 @@ public class FeaturedFragment extends Fragment{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         postInfo = new ArrayList<>();
+        reserveComments = new HashMap<>();
         new GetPosts().execute();
         posts.setOnItemClickListener(clickedItem);
 

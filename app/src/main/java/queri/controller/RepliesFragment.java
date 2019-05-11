@@ -30,26 +30,86 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import queri.model.HttpAuthenticate;
 public class RepliesFragment extends Fragment {
 
-    private ListView comments;
+    public ListView comments;
     private TextView meta;
     private TextView Post;
     private ArrayList<HashMap<String, String>> commentInfo;
     private String TAG = RepliesFragment.class.getSimpleName();
+    public String id = "";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View featuredReply = inflater.inflate(R.layout.fragment_replies,container,false);
+        View featuredReply = inflater.inflate(R.layout.fragment_replies, container, false);
         comments = (ListView) featuredReply.findViewById(R.id.list_reply);
         meta = (TextView) featuredReply.findViewById(R.id.textView2);
         Post = (TextView) featuredReply.findViewById(R.id.textView6);
 
         Post.setText(getArguments().getString("post"));
         meta.setText(getArguments().getString("meta"));
+
+        id = getArguments().getString("postId");
         return featuredReply;
     }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        commentInfo = new ArrayList<>();
+        new GetComments().execute();
+
+    }
+    private class GetComments extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(getActivity(),"Showing Featured",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            HttpAuthenticate sh = new HttpAuthenticate();
+            // Making a request to url and getting response
+            String url = "https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/featured/"+id+"/comments";
+            String jsonStr = sh.makeServiceCall(url);
+
+            Log.e(TAG, "Response from url: " + jsonStr);
+            if (jsonStr != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    for (Iterator<String> it =  jsonObj.keys(); it.hasNext(); ){
+                        String key = it.next();
+                        JSONObject comment = jsonObj.getJSONObject(key);
+//                        String content = comment.getString("content");
+//                        String username = comment.getString()
+                    }
+
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                }
+
+            } else {
+                Log.e(TAG, "Couldn't get json from server.");
+            }
+
+            return null;
+        }
+
+//        @Override
+//        protected void onPostExecute(Void result) {
+//            super.onPostExecute(result);
+//            ListAdapter adapter = new SimpleAdapter(getActivity(), commentInfo,
+//                    R.layout.list_view, new String[]{ "Post","meta_data"},
+//                    new int[]{R.id.Post, R.id.meta_data});
+//            comments.setAdapter(adapter);
+ //       }
+    }
+
+
+
 }
