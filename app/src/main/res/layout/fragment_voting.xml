@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true" />
+        android:layout_height="490dp"
+        android:layout_above="@+id/editText"
+        android:layout_marginBottom="10dp"
+        android:clickable="false" />
 
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="304dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="14dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="58dp"
+        android:layout_toStartOf="@+id/imageView3"
+        android:layout_toLeftOf="@+id/imageView3"
+        android:ems="10"
+        android:hint="@string/what_you_gotta_say"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        tools:ignore="UnusedAttribute" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="72dp"
+        android:layout_height="58dp"
+        android:layout_below="@+id/list"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="-4dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="59dp"
+        android:src="@drawable/ic_notifications_black_24dp" />
 </RelativeLayout>

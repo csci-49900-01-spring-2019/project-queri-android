@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -38,6 +40,8 @@ public class RepliesFragment extends Fragment {
     public ListView comments;
     private TextView meta;
     private TextView Post;
+    private ImageView img;
+    private EditText comment;
     private ArrayList<HashMap<String, String>> commentInfo;
     private String TAG = RepliesFragment.class.getSimpleName();
     public String id = "";
@@ -53,9 +57,26 @@ public class RepliesFragment extends Fragment {
         Post.setText(getArguments().getString("post"));
         meta.setText(getArguments().getString("meta"));
 
+        img = (ImageView) featuredReply.findViewById(R.id.imageView3);
+        comment = (EditText) featuredReply.findViewById(R.id.editText2);
+
+        img.setOnClickListener(clickednotif);
         id = getArguments().getString("postId");
         return featuredReply;
     }
+
+    private ImageView.OnClickListener clickednotif = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String commentGiven = comment.getText().toString();
+            if(commentGiven.isEmpty()){
+                Toast.makeText(getActivity(),"Must have adequate input",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    };
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -63,11 +84,12 @@ public class RepliesFragment extends Fragment {
         new GetComments().execute();
 
     }
+
     private class GetComments extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(getActivity(),"Showing Featured",
+            Toast.makeText(getActivity(), "Showing Featured",
                     Toast.LENGTH_SHORT).show();
         }
 
@@ -75,18 +97,22 @@ public class RepliesFragment extends Fragment {
         protected Void doInBackground(Void... arg0) {
             HttpAuthenticate sh = new HttpAuthenticate();
             // Making a request to url and getting response
-            String url = "https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/featured/"+id+"/comments";
+            String url = "https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/featured/" + id + "/comments";
             String jsonStr = sh.makeServiceCall(url);
 
             Log.e(TAG, "Response from url: " + jsonStr);
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
-                    for (Iterator<String> it =  jsonObj.keys(); it.hasNext(); ){
+                    for (Iterator<String> it = jsonObj.keys(); it.hasNext(); ) {
                         String key = it.next();
                         JSONObject comment = jsonObj.getJSONObject(key);
-//                        String content = comment.getString("content");
-//                        String username = comment.getString()
+                        String content = comment.getString("content");
+                        String username = comment.getString("username");
+                        HashMap<String, String> card = new HashMap<>();
+                        card.put("content", content);
+                        card.put("author", username);
+                        commentInfo.add(card);
                     }
 
                 } catch (final JSONException e) {
@@ -100,16 +126,15 @@ public class RepliesFragment extends Fragment {
             return null;
         }
 
-//        @Override
-//        protected void onPostExecute(Void result) {
-//            super.onPostExecute(result);
-//            ListAdapter adapter = new SimpleAdapter(getActivity(), commentInfo,
-//                    R.layout.list_view, new String[]{ "Post","meta_data"},
-//                    new int[]{R.id.Post, R.id.meta_data});
-//            comments.setAdapter(adapter);
- //       }
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            ListAdapter adapter = new SimpleAdapter(getActivity(), commentInfo,
+                    R.layout.list_view, new String[]{ "content","author"},
+                    new int[]{R.id.Post, R.id.meta_data});
+            comments.setAdapter(adapter);
+               }
     }
-
 
 
 }
