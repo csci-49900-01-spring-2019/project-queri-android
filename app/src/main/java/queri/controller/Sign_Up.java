@@ -13,10 +13,12 @@ import android.widget.Toast;
 
 import com.capstone.queri.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 import queri.model.AsteriskPasswordTransformationMethod;
 
@@ -66,6 +68,15 @@ public class Sign_Up extends AppCompatActivity {
                         if(task.isSuccessful()){
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            assert user != null;
+                            user.getIdToken(true).addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
+                                @Override
+                                public void onSuccess(GetTokenResult getTokenResult) {
+                                    String idToken = getTokenResult.getToken();
+
+                                }
+                            });
+
                             Intent mainIntent = new Intent(Sign_Up.this, MainActivity.class);
                             Sign_Up.this.startActivity(mainIntent);
 
