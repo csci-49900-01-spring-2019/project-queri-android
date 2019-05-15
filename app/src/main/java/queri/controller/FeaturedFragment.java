@@ -95,7 +95,6 @@ public class FeaturedFragment extends Fragment{
                     // looping through All posts
                     for (int i = 0; i < featuredPosts.length(); i++) {
                         JSONObject post = featuredPosts.getJSONObject(i);
-                        //JSONObject id = featuredPosts.getJSONObject();
                         String postContent = post.getString("content");
 
                         // Getting Post meta data

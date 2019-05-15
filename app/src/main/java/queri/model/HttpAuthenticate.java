@@ -10,13 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class HttpAuthenticate {
     private static final String TAG = HttpAuthenticate.class.getSimpleName();
@@ -66,20 +59,4 @@ public class HttpAuthenticate {
 
         return sb.toString();
     }
-    public String makeAuthenticationUser(String reqUrl, String idToken, String username) {
-        String response = null;
-        try {
-            OkHttpClient
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "MalformedURLException: " + e.getMessage());
-        } catch (ProtocolException e) {
-            Log.e(TAG, "ProtocolException: " + e.getMessage());
-        } catch (IOException e) {
-            Log.e(TAG, "IOException: " + e.getMessage());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage());
-        }
-        return response;
-    }
-
 }

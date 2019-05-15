@@ -15,10 +15,13 @@ import com.capstone.queri.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import queri.model.AsteriskPasswordTransformationMethod;
 
@@ -28,6 +31,7 @@ public class Sign_Up extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button Signup;
     private ProgressDialog mProgressDialog;
+    private DatabaseReference mDatabase;
     private String TAG = "Android Sign On";
 
     @Override
@@ -35,6 +39,7 @@ public class Sign_Up extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         username = (EditText) findViewById(R.id.editText8);
         email = (EditText) findViewById(R.id.editText7);
         password = (EditText) findViewById(R.id.editText5);
@@ -49,7 +54,7 @@ public class Sign_Up extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             String emailgiven = email.getText().toString();
-            String name = username.getText().toString();
+            final String name = username.getText().toString();
             String pass1 = password.getText().toString();
             String pass2 = reenter.getText().toString();
             if(!checkInput(emailgiven, pass1, pass2, name)){
@@ -66,17 +71,10 @@ public class Sign_Up extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            Log.d(TAG, "createUserWithEmail:success");
                             assert user != null;
-                            user.getIdToken(true).addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
-                                @Override
-                                public void onSuccess(GetTokenResult getTokenResult) {
-                                    String idToken = getTokenResult.getToken();
-
-                                }
-                            });
-
+                            mDatabase.child("users").child(user.getUid()).child("user_info").child("username").setValue(name);
                             Intent mainIntent = new Intent(Sign_Up.this, MainActivity.class);
                             Sign_Up.this.startActivity(mainIntent);
 
@@ -88,6 +86,7 @@ public class Sign_Up extends AppCompatActivity {
                     }
                 });
             }
+
         }
     };
 
@@ -97,4 +96,6 @@ public class Sign_Up extends AppCompatActivity {
         else
             return true;
     }
+
+
 }
