@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -20,8 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import queri.model.HttpAuthenticate;
 
@@ -30,11 +34,15 @@ public class VotingFragment extends Fragment {
     private ListView posts;
     private ArrayList<HashMap<String, String>> postInfo;
     private String TAG = VotingFragment.class.getSimpleName();
+    private EditText post;
+    private CheckBox Anonymous;
+    private String Anon = "Anonymous";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View voting = inflater.inflate(R.layout.fragment_voting,container,false);
         posts = (ListView) voting.findViewById(R.id.list);
+        post = (EditText) voting.findViewById(R.id.editText);
         return voting;
     }
     @Override
@@ -56,31 +64,25 @@ public class VotingFragment extends Fragment {
         protected Void doInBackground(Void... arg0) {
             HttpAuthenticate sh = new HttpAuthenticate();
             // Making a request to url and getting response
-            String url = "https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/";
+            String url = "https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/voting";
             String jsonStr = sh.makeServiceCall(url);
 
             Log.e(TAG, "Response from url: " + jsonStr);
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
-
-                    // Getting JSON Array node
-                    JSONArray featuredPosts = jsonObj.getJSONArray("voting");
-                    Log.e(TAG, "Response from voting: " + featuredPosts);
-                    // looping through All posts
-                    for (int i = 0; i < featuredPosts.length(); i++) {
-                        JSONObject post = featuredPosts.getJSONObject(i);
+                    Log.e(TAG, "Response from voting: " + jsonStr);
+                    for (Iterator<String> it = jsonObj.keys(); it.hasNext(); ) {
+                        String key = it.next();
+                        JSONObject post = jsonObj.getJSONObject(key);
                         String postContent = post.getString("content");
 
-                        // Getting Post meta data
                         JSONObject meta = post.getJSONObject("meta");
-                        String numVotes = String.valueOf(meta.getInt("votes"));
+                        String numVotes = String.valueOf(meta.getInt("likes"));
 
                         String username = post.getString("username");
 
                         String totalmeta = username+"\t"+"\tNumber of Likes: "+numVotes;
-
-                        // tmp hash map for single post
                         HashMap<String, String> card = new HashMap<>();
 
                         // adding each child node to HashMap key => value
@@ -110,6 +112,48 @@ public class VotingFragment extends Fragment {
             posts.setAdapter(adapter);
         }
     }
+    private class PostComment extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            HttpAuthenticate sh = new HttpAuthenticate();
+            // Making a request to url and getting response
+            String url = "https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/voting/new/";
+
+
+            String commentGiven = post.getText().toString();
+
+            if(commentGiven.isEmpty()){
+                Toast.makeText(getActivity(),"Must have adequate input",
+                        Toast.LENGTH_SHORT).show();
+            }
+            String jsonStr = null;
+            try {
+                jsonStr = sh.outputServiceCall(url,Anon,commentGiven);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.e(TAG, "Response from url: " + jsonStr);
+            if (jsonStr == null) {
+                Log.e(TAG, "Couldn't get json from server.");
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            new GetPosts().execute();
+        }
+    }
+
+
 
 
 }

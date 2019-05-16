@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -25,11 +26,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.capstone.queri.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,6 +50,11 @@ public class RepliesFragment extends Fragment {
     private TextView Post;
     private ImageView img;
     private EditText comment;
+    private String username = "";
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
+    private String Anon = "Anonymous";
+    private CheckBox ifchecked;
     private ArrayList<HashMap<String, String>> commentInfo;
     private String TAG = RepliesFragment.class.getSimpleName();
     public String id = "";
@@ -60,6 +73,7 @@ public class RepliesFragment extends Fragment {
         img = (ImageView) featuredReply.findViewById(R.id.imageView3);
         comment = (EditText) featuredReply.findViewById(R.id.editText2);
 
+        ifchecked = (CheckBox) featuredReply.findViewById(R.id.checkBox);
         img.setOnClickListener(clickednotif);
         id = getArguments().getString("postId");
         return featuredReply;
@@ -68,13 +82,7 @@ public class RepliesFragment extends Fragment {
     private ImageView.OnClickListener clickednotif = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            String commentGiven = comment.getText().toString();
-            if(commentGiven.isEmpty()){
-                Toast.makeText(getActivity(),"Must have adequate input",
-                        Toast.LENGTH_SHORT).show();
-            }
-
-
+           new PostComment().execute();
         }
     };
 
@@ -100,7 +108,6 @@ public class RepliesFragment extends Fragment {
             // Making a request to url and getting response
             String url = "https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/featured/" + id + "/comments";
             String jsonStr = sh.makeServiceCall(url);
-
             Log.e(TAG, "Response from url: " + jsonStr);
             if (jsonStr != null) {
                 try {
@@ -136,6 +143,47 @@ public class RepliesFragment extends Fragment {
             comments.setAdapter(adapter);
                }
     }
+    private class PostComment extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(getActivity(), "Showing Featured",
+                    Toast.LENGTH_SHORT).show();
+        }
 
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            HttpAuthenticate sh = new HttpAuthenticate();
+            // Making a request to url and getting response
+            String url = "https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/featured/" + id + "/comments/new";
+
+            String commentGiven = comment.getText().toString();
+
+            if(commentGiven.isEmpty()){
+                Toast.makeText(getActivity(),"Must have adequate input",
+                        Toast.LENGTH_SHORT).show();
+            }
+            String jsonStr = null;
+            try {
+                jsonStr = sh.outputServiceCall(url,Anon,commentGiven);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.e(TAG, "Response from url: " + jsonStr);
+            if (jsonStr == null) {
+                Log.e(TAG, "Couldn't get json from server.");
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            new GetComments().execute();
+        }
+    }
 
 }
