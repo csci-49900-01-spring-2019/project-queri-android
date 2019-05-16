@@ -82,7 +82,13 @@ public class RepliesFragment extends Fragment {
     private ImageView.OnClickListener clickednotif = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-           new PostComment().execute();
+            String commentGiven = comment.getText().toString();
+            if(commentGiven.isEmpty()){
+                Toast.makeText(getActivity(),"Must have adequate input",
+                        Toast.LENGTH_SHORT).show();
+            }
+            else
+                new PostComment().execute();
         }
     };
 
@@ -158,11 +164,7 @@ public class RepliesFragment extends Fragment {
             String url = "https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/featured/" + id + "/comments/new";
 
             String commentGiven = comment.getText().toString();
-
-            if(commentGiven.isEmpty()){
-                Toast.makeText(getActivity(),"Must have adequate input",
-                        Toast.LENGTH_SHORT).show();
-            }
+            comment.getText().clear();
             String jsonStr = null;
             try {
                 jsonStr = sh.outputServiceCall(url,Anon,commentGiven);

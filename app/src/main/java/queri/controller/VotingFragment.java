@@ -9,12 +9,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.capstone.queri.R;
 
@@ -36,15 +41,44 @@ public class VotingFragment extends Fragment {
     private String TAG = VotingFragment.class.getSimpleName();
     private EditText post;
     private CheckBox Anonymous;
+    private ImageView img;
     private String Anon = "Anonymous";
+    private ToggleButton toggle;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View voting = inflater.inflate(R.layout.fragment_voting,container,false);
+        View voting = inflater.inflate(R.layout.fragment_voting, container, false);
         posts = (ListView) voting.findViewById(R.id.list);
         post = (EditText) voting.findViewById(R.id.editText);
+        img = (ImageView) voting.findViewById(R.id.imageView3);
+
+        Anonymous = (CheckBox) voting.findViewById(R.id.checkBox);
+        posts.setOnItemClickListener(clickedItem);
+        img.setOnClickListener(clickednotif);
         return voting;
     }
+
+    private ListView.OnItemClickListener clickedItem = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Toast.makeText(getActivity(),"Item Liked",
+                    Toast.LENGTH_LONG).show();
+        }
+    };
+
+    private ImageView.OnClickListener clickednotif = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            String commentGiven = post.getText().toString();
+            if(commentGiven.isEmpty()){
+                Toast.makeText(getActivity(),"Must have adequate input",
+                        Toast.LENGTH_SHORT).show();
+            }
+            else
+                new PostComment().execute();
+        }
+    };
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -52,6 +86,7 @@ public class VotingFragment extends Fragment {
         new GetPosts().execute();
 
     }
+
     private class GetPosts extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -125,10 +160,13 @@ public class VotingFragment extends Fragment {
 
 
             String commentGiven = post.getText().toString();
+            post.getText().clear();
 
-            if(commentGiven.isEmpty()){
+            while(commentGiven.isEmpty()){
                 Toast.makeText(getActivity(),"Must have adequate input",
                         Toast.LENGTH_SHORT).show();
+                commentGiven = post.getText().toString();
+                post.getText().clear();
             }
             String jsonStr = null;
             try {

@@ -89,6 +89,14 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container, replyFragment)
                 .commit();
     }
+    public void repliesArchived(@Nullable Bundle bundle)
+    {
+        Fragment replyFragment = new RepliesFragmentArchived();
+        replyFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, replyFragment)
+                .commit();
+    }
     private BottomNavigationView.OnNavigationItemSelectedListener navlistener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override

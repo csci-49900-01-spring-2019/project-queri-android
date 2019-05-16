@@ -25,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import queri.model.AsteriskPasswordTransformationMethod;
 
-public class Sign_Up extends AppCompatActivity {
+public class Sign_Up<mAuthListener> extends AppCompatActivity {
 
     private EditText username, password, email, reenter;
     private FirebaseAuth mAuth;
@@ -48,6 +48,7 @@ public class Sign_Up extends AppCompatActivity {
         reenter.setTransformationMethod(new AsteriskPasswordTransformationMethod());
         Signup = (Button) findViewById(R.id.button3);
         Signup.setOnClickListener(signListener);
+
     }
 
     private View.OnClickListener signListener = new View.OnClickListener() {
@@ -74,6 +75,7 @@ public class Sign_Up extends AppCompatActivity {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             Log.d(TAG, "createUserWithEmail:success");
                             assert user != null;
+                            sendVerificationEmail();
                             mDatabase.child("users").child(user.getUid()).child("user_info").child("username").setValue(name);
                             Intent mainIntent = new Intent(Sign_Up.this, MainActivity.class);
                             Sign_Up.this.startActivity(mainIntent);
@@ -89,6 +91,36 @@ public class Sign_Up extends AppCompatActivity {
 
         }
     };
+
+    private void sendVerificationEmail()
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // email sent
+                            // after email is sent just logout the user and finish this activity
+                            FirebaseAuth.getInstance().signOut();
+                            startActivity(new Intent(Sign_Up.this, MainActivity.class));
+                            finish();
+                        }
+                        else
+                        {
+                            // email not sent, so display message and restart the activity or do whatever you wish to do
+
+                            //restart this activity
+                            overridePendingTransition(0, 0);
+                            finish();
+                            overridePendingTransition(0, 0);
+                            startActivity(getIntent());
+
+                        }
+                    }
+                });
+    }
 
     private Boolean checkInput(String email, String Password, String reenter, String username){
         if(email.isEmpty() || Password.isEmpty() || reenter.isEmpty() || username.isEmpty())

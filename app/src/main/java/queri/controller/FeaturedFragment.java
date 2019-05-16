@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import queri.model.HttpAuthenticate;
 
@@ -81,47 +82,42 @@ public class FeaturedFragment extends Fragment{
         protected Void doInBackground(Void... arg0) {
             HttpAuthenticate sh = new HttpAuthenticate();
             // Making a request to url and getting response
-            String url = "https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/";
+            String url = "https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/featured";
             String jsonStr = sh.makeServiceCall(url);
 
             Log.e(TAG, "Response from url: " + jsonStr);
             if (jsonStr != null) {
                 try {
+                    int counter = 0;
                     JSONObject jsonObj = new JSONObject(jsonStr);
-
-                    // Getting JSON Array node
-                    JSONArray featuredPosts = jsonObj.getJSONArray("featured");
-                    Log.e(TAG, "Response from featured: " + featuredPosts);
-                    // looping through All posts
-                    for (int i = 0; i < featuredPosts.length(); i++) {
-                        JSONObject post = featuredPosts.getJSONObject(i);
+                    Log.e(TAG, "Response from featured: " + jsonStr);
+                    for (Iterator<String> it = jsonObj.keys(); it.hasNext(); ) {
+                        String key = it.next();
+                        JSONObject post = jsonObj.getJSONObject(key);
                         String postContent = post.getString("content");
 
-                        // Getting Post meta data
                         JSONObject meta = post.getJSONObject("meta");
                         String numComments = String.valueOf(meta.getInt("comments"));
                         String days_left = String.valueOf(meta.getInt("days_remaining"));
-                        String numLikes = String.valueOf(meta.getInt("likes"));
+                        String numVotes = String.valueOf(meta.getInt("likes"));
 
                         String username = post.getString("username");
 
-                        String totalmeta = username+"\t\t"+"Comments: "+numComments
-                                +"\tDays Left: "+days_left+"\tNumber of Likes: "+numLikes;
-
-                        // tmp hash map for single post
+                        String totalmeta = username + "\t" + "\tNumber of Likes: " + numVotes;
                         HashMap<String, String> card = new HashMap<>();
 
                         // adding each child node to HashMap key => value
                         card.put("Post", postContent);
                         card.put("meta_data", totalmeta);
-                        reserveComments.put(postContent,String.valueOf(i));
+
                         // adding contact to contact list
+                        reserveComments.put(postContent,String.valueOf(counter));
                         postInfo.add(card);
+                        ++counter;
                     }
-                } catch (final JSONException e) {
+                }catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                 }
-
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
             }
