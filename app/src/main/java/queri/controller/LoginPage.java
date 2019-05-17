@@ -50,6 +50,28 @@ public class LoginPage extends AppCompatActivity {
             }
         });
     }
+    private void checkIfEmailVerified()
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user.isEmailVerified())
+        {
+            // user is verified, so you can finish this activity or send user to activity which you want.
+            finish();
+            Toast.makeText(LoginPage.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
+            Intent mainIntent = new Intent(LoginPage.this, MainActivity.class);
+            LoginPage.this.startActivity(mainIntent);
+        }
+        else
+        {
+            Toast.makeText(LoginPage.this, "Please verify your email",
+                    Toast.LENGTH_LONG).show();
+            FirebaseAuth.getInstance().signOut();
+
+            //restart this activity
+
+        }
+    }
 
     private View.OnClickListener logListener = new View.OnClickListener() {
         @Override
@@ -65,10 +87,7 @@ public class LoginPage extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                Intent mainIntent = new Intent(LoginPage.this, MainActivity.class);
-                                LoginPage.this.startActivity(mainIntent);
+                                checkIfEmailVerified();
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());

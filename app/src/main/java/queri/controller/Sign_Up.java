@@ -77,8 +77,6 @@ public class Sign_Up<mAuthListener> extends AppCompatActivity {
                             assert user != null;
                             sendVerificationEmail();
                             mDatabase.child("users").child(user.getUid()).child("user_info").child("username").setValue(name);
-                            Intent mainIntent = new Intent(Sign_Up.this, MainActivity.class);
-                            Sign_Up.this.startActivity(mainIntent);
 
                         }else{
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -104,7 +102,9 @@ public class Sign_Up<mAuthListener> extends AppCompatActivity {
                             // email sent
                             // after email is sent just logout the user and finish this activity
                             FirebaseAuth.getInstance().signOut();
-                            startActivity(new Intent(Sign_Up.this, MainActivity.class));
+                            Toast.makeText(Sign_Up.this, "Please Verify your email",
+                                    Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(Sign_Up.this, LoginPage.class));
                             finish();
                         }
                         else

@@ -164,7 +164,6 @@ public class RepliesFragment extends Fragment {
             String url = "https://us-central1-projectq-42a18.cloudfunctions.net/queri/posts/featured/" + id + "/comments/new";
 
             String commentGiven = comment.getText().toString();
-            comment.getText().clear();
             String jsonStr = null;
             try {
                 jsonStr = sh.outputServiceCall(url,Anon,commentGiven);
